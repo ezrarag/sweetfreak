@@ -37,17 +37,23 @@ export default function Hero() {
           </motion.button>
 
           {/* Dropdown Menu */}
-          <AnimatePresence>
-            {isDropdownOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="absolute top-16 right-0 bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200 py-2 min-w-48"
-              >
+            <AnimatePresence>
+              {isDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                  transition={{ 
+                    type: "spring", 
+                    stiffness: 300, 
+                    damping: 30,
+                    duration: 0.3 
+                  }}
+                  className="absolute top-16 right-0 bg-transparent backdrop-blur-sm rounded-2xl shadow-xl border-2 border-orange-400 py-2 min-w-48"
+                >
                 <Link href="/about">
                   <div
-                    className="px-6 py-3 text-gray-700 hover:text-pink-600 transition-colors cursor-pointer"
+                    className="px-6 py-3 text-pink-600 hover:text-orange-300 transition-colors cursor-pointer"
                     onClick={() => setIsDropdownOpen(false)}
                   >
                     About Us
@@ -55,7 +61,7 @@ export default function Hero() {
                 </Link>
                   <Link href="/contact">
                     <div
-                      className="px-6 py-3 text-gray-700 hover:text-purple-600 transition-colors cursor-pointer"
+                      className="px-6 py-3 text-pink-600 hover:text-orange-300 transition-colors cursor-pointer"
                       onClick={() => setIsDropdownOpen(false)}
                     >
                       Contact Us
@@ -63,14 +69,14 @@ export default function Hero() {
                   </Link>
                   <Link href="/gallery">
                     <div
-                      className="px-6 py-3 text-gray-700 hover:text-pink-600 transition-colors cursor-pointer"
+                      className="px-6 py-3 text-pink-600 hover:text-orange-300 transition-colors cursor-pointer"
                       onClick={() => setIsDropdownOpen(false)}
                     >
                       Gallery
                     </div>
                   </Link>
                 <div
-                  className="px-6 py-3 text-gray-700 hover:text-pink-600 transition-colors cursor-pointer border-t border-gray-200"
+                  className="px-6 py-3 text-pink-600 hover:text-orange-300 transition-colors cursor-pointer border-t border-orange-400"
                   onClick={() => {
                     setIsMenuOpen(true);
                     setIsDropdownOpen(false);
