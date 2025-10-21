@@ -1,9 +1,19 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@100..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
+@import './textures.css';
 
 :root {
+  /* Brand Colors */
+  --candy-pink: #FF4F9A;
+  --grape-purple: #9B35FF;
+  --melon-red: #FF5B7F;
+  --lime-green: #9EFF58;
+  --cream-white: #FFF9F6;
+  --deep-charcoal: #1A1A1A;
+  
+  /* Legacy colors for compatibility */
   --background: #ffffff;
   --foreground: #171717;
-  --candy-pink: #ff69b4;
   --candy-purple: #9370db;
   --candy-green: #98fb98;
   --candy-yellow: #ffff00;
@@ -14,24 +24,65 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  
+  /* Typography */
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-accent: 'Bricolage Grotesque', sans-serif;
+  
+  /* Brand Colors */
+  --color-candy-pink: var(--candy-pink);
+  --color-grape-purple: var(--grape-purple);
+  --color-melon-red: var(--melon-red);
+  --color-lime-green: var(--lime-green);
+  --color-cream-white: var(--cream-white);
+  --color-deep-charcoal: var(--deep-charcoal);
+  
+  /* Gradients */
+  --gradient-sweet: linear-gradient(90deg, #FF4F9A 0%, #9B35FF 100%);
 }
 
 body {
-  background: linear-gradient(135deg, #87ceeb 0%, #ff69b4 50%, #98fb98 100%);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--cream-white);
+  color: var(--deep-charcoal);
+  font-family: var(--font-body);
   min-height: 100vh;
+  line-height: 1.6;
 }
 
-/* Custom bubble text effect */
+/* Typography Classes */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-accent {
+  font-family: var(--font-accent);
+}
+
+/* Brand Gradient */
+.bg-sweet-gradient {
+  background: var(--gradient-sweet);
+}
+
+.text-sweet-gradient {
+  background: var(--gradient-sweet);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Enhanced bubble text effect */
 .bubble-text {
   text-shadow: 
     2px 2px 0px rgba(255, 255, 255, 0.8),
     4px 4px 0px rgba(0, 0, 0, 0.1);
   font-weight: 800;
-  letter-spacing: 1px;
+  letter-spacing: 0.2em;
+  font-family: var(--font-display);
 }
 
 /* Candy sprinkle animation */

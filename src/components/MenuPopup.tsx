@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { X, Apple, Grape, Cherry, Droplets, Banana, Citrus, Heart, ShoppingCart, Plus } from 'lucide-react';
 import { candiedFruits, adultDrinks } from '@/data/products';
 import CheckoutPopup from './CheckoutPopup';
+import Button from './ui/Button';
+import { fadeInUp, scaleIn, buttonHover } from '@/lib/motionPresets';
 
 interface MenuPopupProps {
   isOpen: boolean;
@@ -98,6 +100,76 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
 
   const currentProducts = activeTab === 'candied-fruits' ? candiedFruits : adultDrinks;
 
+  // ProductCard Component
+  const ProductCard = ({ product, index }: { product: any; index: number }) => (
+    <motion.div
+      variants={scaleIn}
+      initial="hidden"
+      animate="visible"
+      transition={{ delay: index * 0.1 }}
+      className="group bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow-[0_0_20px_-5px_rgba(155,53,255,0.2)] hover:scale-102 hover:ring-2 hover:ring-candy-pink/50 transition-all duration-300"
+    >
+      {/* Product Image */}
+      <div className="relative h-48 overflow-hidden rounded-xl mb-4">
+        <img
+          src={getProductImage(product.id)}
+          alt={product.name}
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        
+        {/* Add to Cart Button */}
+        <motion.button
+          whileHover={buttonHover.hover}
+          whileTap={buttonHover.tap}
+          onClick={() => addToCart(product)}
+          className="absolute bottom-4 right-4 bg-white/90 hover:bg-white text-gray-800 hover:text-candy-pink transition-all duration-300 rounded-full p-3 opacity-0 group-hover:opacity-100"
+        >
+          <Plus size={20} />
+        </motion.button>
+      </div>
+
+      {/* Product Info */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <span className={`px-3 py-1 rounded-full text-xs font-accent font-semibold uppercase ${
+            activeTab === 'candied-fruits' 
+              ? 'bg-candy-pink/20 text-candy-pink' 
+              : 'bg-grape-purple/20 text-grape-purple'
+          }`}>
+            {activeTab === 'candied-fruits' ? 'Candied Fruit' : 'Adult Drink'}
+          </span>
+          <div className={`${getColor(product.id)}`}>
+            {getIcon(product.id)}
+          </div>
+        </div>
+
+        <h3 className="text-xl font-display font-bold text-white tracking-tight">
+          {product.name}
+        </h3>
+        
+        <p className="text-sm font-body text-white/80 leading-relaxed">
+          {product.description}
+        </p>
+        
+        <div className="flex items-center justify-between">
+          <div className="text-lg font-display font-bold text-candy-pink">
+            {product.price}
+          </div>
+          
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => addToCart(product)}
+            className="px-4 py-2"
+          >
+            Add to Cart
+          </Button>
+        </div>
+      </div>
+    </motion.div>
+  );
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -105,163 +177,90 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center"
+          className="fixed inset-0 backdrop-blur-xl bg-black/50 z-50 flex items-center justify-center p-4"
           onClick={onClose}
         >
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            className="bg-transparent backdrop-blur-sm rounded-3xl w-full h-full max-w-7xl max-h-[95vh] overflow-hidden relative border-2 border-orange-400"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            className="relative w-full h-full max-w-7xl max-h-[95vh] overflow-hidden rounded-3xl shadow-[0_0_40px_-5px_rgba(255,79,154,0.3)]"
+            style={{
+              background: 'linear-gradient(#141414, #141414), linear-gradient(90deg, #FF4F9A, #9B35FF)',
+              backgroundOrigin: 'border-box',
+              backgroundClip: 'content-box, border-box',
+              border: '1px solid transparent'
+            }}
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Radial Background Gradient */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_#FF4F9A22,_#9B35FF11,_transparent_70%)]" />
+            
             {/* Header */}
-            <div className="absolute top-0 left-0 right-0 z-20 bg-transparent backdrop-blur-sm">
+            <div className="relative z-20 bg-black/20 backdrop-blur-sm border-b border-white/10">
               <div className="flex items-center justify-between p-6">
                 {/* Tab Navigation */}
-                <div className="bg-transparent backdrop-blur-sm border-2 border-orange-400 rounded-full p-2">
-                  {/* Desktop Layout */}
-                  <div className="hidden md:flex">
-                    <button
-                      onClick={() => setActiveTab('candied-fruits')}
-                      className={`px-8 py-3 rounded-full font-bold text-lg transition-all ${
-                        activeTab === 'candied-fruits'
-                          ? 'bg-pink-500 text-white shadow-lg'
-                          : 'text-white hover:text-pink-300'
-                      }`}
-                    >
-                      Candied Fruits
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('adult-drinks')}
-                      className={`px-8 py-3 rounded-full font-bold text-lg transition-all ${
-                        activeTab === 'adult-drinks'
-                          ? 'bg-purple-500 text-white shadow-lg'
-                          : 'text-white hover:text-purple-300'
-                      }`}
-                    >
-                      Adult Drinks
-                    </button>
-                  </div>
-
-                  {/* Mobile Layout - Single Button */}
-                  <div className="md:hidden">
-                    <button
-                      onClick={() => setActiveTab(activeTab === 'candied-fruits' ? 'adult-drinks' : 'candied-fruits')}
-                      className={`px-6 py-3 rounded-full font-bold text-lg transition-all ${
-                        activeTab === 'candied-fruits'
-                          ? 'bg-pink-500 text-white'
-                          : 'bg-purple-500 text-white'
-                      }`}
-                    >
-                      {activeTab === 'candied-fruits' ? 'Candied Fruits' : 'Adult Drinks'}
-                      <span className="ml-2">▼</span>
-                    </button>
-                  </div>
+                <div className="flex bg-black/30 backdrop-blur-sm rounded-full p-1 border border-white/20">
+                  <motion.button
+                    onClick={() => setActiveTab('candied-fruits')}
+                    className={`px-6 py-3 rounded-full font-body font-semibold text-sm transition-all ${
+                      activeTab === 'candied-fruits'
+                        ? 'bg-sweet-gradient text-white shadow-lg'
+                        : 'bg-transparent text-white/70 hover:text-white'
+                    }`}
+                    layout
+                  >
+                    Candied Fruits
+                  </motion.button>
+                  <motion.button
+                    onClick={() => setActiveTab('adult-drinks')}
+                    className={`px-6 py-3 rounded-full font-body font-semibold text-sm transition-all ${
+                      activeTab === 'adult-drinks'
+                        ? 'bg-sweet-gradient text-white shadow-lg'
+                        : 'bg-transparent text-white/70 hover:text-white'
+                    }`}
+                    layout
+                  >
+                    Adult Drinks
+                  </motion.button>
                 </div>
 
                 {/* Right Side Controls */}
                 <div className="flex items-center gap-4">
                   {/* Cart Button */}
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={buttonHover.hover}
+                    whileTap={buttonHover.tap}
                     onClick={() => setShowCheckout(true)}
-                    className="relative bg-transparent border-2 border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white transition-all duration-300 rounded-full p-3"
+                    className="relative bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all duration-300 rounded-full p-3"
                   >
                     <ShoppingCart size={24} />
                     {cart.length > 0 && (
-                      <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
+                      <span className="absolute -top-2 -right-2 bg-candy-pink text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-body font-semibold">
                         {cart.reduce((sum, item) => sum + item.quantity, 0)}
                       </span>
                     )}
                   </motion.button>
                   
                   {/* Close Button */}
-                  <button
+                  <motion.button
+                    whileHover={buttonHover.hover}
+                    whileTap={buttonHover.tap}
                     onClick={onClose}
-                    className="text-white hover:text-orange-300 transition-colors"
+                    className="text-white/70 hover:text-white transition-colors"
                   >
                     <X size={32} />
-                  </button>
+                  </motion.button>
                 </div>
               </div>
             </div>
 
             {/* Product Grid */}
-            <div className="pt-24 pb-8 px-8 h-full overflow-y-auto">
+            <div className="relative z-10 pt-8 pb-8 px-8 h-full overflow-y-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {currentProducts.map((product, index) => (
-                  <motion.div
-                    key={product.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100"
-                  >
-                    {/* Product Image */}
-                    <div className="relative h-64 overflow-hidden">
-                      <img
-                        src={getProductImage(product.id)}
-                        alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      
-                      {/* Add to Cart Button */}
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => addToCart(product)}
-                        className="absolute bottom-4 right-4 bg-white/90 hover:bg-white text-gray-800 hover:text-pink-600 transition-all duration-300 rounded-full p-3 opacity-0 group-hover:opacity-100"
-                      >
-                        <Plus size={20} />
-                      </motion.button>
-                    </div>
-
-                    {/* Product Info */}
-                    <div className="p-6">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          activeTab === 'candied-fruits' 
-                            ? 'bg-pink-100 text-pink-700' 
-                            : 'bg-purple-100 text-purple-700'
-                        }`}>
-                          {activeTab === 'candied-fruits' ? 'Candied Fruit' : 'Adult Drink'}
-                        </span>
-                        <div className={`${getColor(product.id)}`}>
-                          {getIcon(product.id)}
-                        </div>
-                      </div>
-
-                      <h3 className="text-2xl font-bold text-gray-900 mb-3" style={{ fontFamily: 'Georgia, serif' }}>
-                        {product.name}
-                      </h3>
-                      
-                      <p className="text-gray-600 mb-4 leading-relaxed">
-                        {product.description}
-                      </p>
-                      
-                      <div className="flex items-center justify-between">
-                        <div className="text-3xl font-bold text-gray-900" style={{ fontFamily: 'Georgia, serif' }}>
-                          {product.price}
-                        </div>
-                        
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => addToCart(product)}
-                          className={`px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 border-2 ${
-                            activeTab === 'candied-fruits'
-                              ? 'bg-transparent border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white'
-                              : 'bg-transparent border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white'
-                          }`}
-                        >
-                          Add to Cart
-                        </motion.button>
-                      </div>
-                    </div>
-                  </motion.div>
+                  <ProductCard key={product.id} product={product} index={index} />
                 ))}
               </div>
             </div>

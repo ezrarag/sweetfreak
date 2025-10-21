@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { X, Heart, Grape, Banana, Citrus, Droplets, Apple, Cherry, ShoppingCart, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import Button from '@/components/ui/Button';
+import { fadeInUp, scaleIn, float } from '@/lib/motionPresets';
 
 interface GalleryItem {
   id: string;
@@ -136,7 +138,7 @@ export default function Gallery() {
   const currentItem = galleryItems[currentIndex];
 
   return (
-    <div className="relative h-screen overflow-hidden">
+    <div className="relative h-screen overflow-hidden noise-overlay">
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -145,36 +147,39 @@ export default function Gallery() {
         }}
       />
       
-      {/* Overlay with transparency */}
-      <div className="absolute inset-0 bg-[#FAF5FE] opacity-75"></div>
+      {/* Enhanced overlay with gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40"></div>
 
-      {/* Floating fruits - more subtle */}
+      {/* Floating fruits - enhanced with motion presets */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
           className="absolute top-20 left-10 text-pink-200"
-          animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
-          transition={{ duration: 6, repeat: Infinity }}
+          variants={float}
+          animate="animate"
         >
           <Heart size={32} />
         </motion.div>
         <motion.div
           className="absolute top-32 right-20 text-purple-200"
-          animate={{ y: [0, -15, 0], rotate: [0, -5, 0] }}
-          transition={{ duration: 6, repeat: Infinity, delay: 1 }}
+          variants={float}
+          animate="animate"
+          transition={{ delay: 1 }}
         >
           <Grape size={28} />
         </motion.div>
         <motion.div
           className="absolute bottom-40 left-20 text-yellow-200"
-          animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
-          transition={{ duration: 6, repeat: Infinity, delay: 2 }}
+          variants={float}
+          animate="animate"
+          transition={{ delay: 2 }}
         >
           <Banana size={24} />
         </motion.div>
         <motion.div
           className="absolute bottom-20 right-10 text-orange-200"
-          animate={{ y: [0, -15, 0], rotate: [0, -5, 0] }}
-          transition={{ duration: 6, repeat: Infinity, delay: 3 }}
+          variants={float}
+          animate="animate"
+          transition={{ delay: 3 }}
         >
           <Citrus size={28} />
         </motion.div>
@@ -186,7 +191,7 @@ export default function Gallery() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/30 transition-all duration-300 rounded-full p-3"
+            className="bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/30 transition-all duration-300 rounded-full p-3 btn-shadow"
           >
             <ArrowLeft size={24} />
           </motion.button>
@@ -198,101 +203,104 @@ export default function Gallery() {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/30 transition-all duration-300 rounded-full p-3"
+          className="bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/30 transition-all duration-300 rounded-full p-3 btn-shadow"
         >
           <ShoppingCart size={24} />
         </motion.button>
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 h-full flex items-center justify-center px-4">
-        <div className="max-w-4xl mx-auto text-center">
+      <div className="relative z-10 h-full flex items-center justify-center px-4 py-20 lg:py-32">
+        <div className="max-w-7xl mx-auto text-center">
           {/* Product Display */}
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
+              variants={scaleIn}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
               transition={{ duration: 0.5 }}
-              className="mb-12"
+              className="mb-16"
             >
               {/* Product Icon */}
-              <div className="mb-8">
-                <div className="bg-white/20 backdrop-blur-sm rounded-full w-32 h-32 flex items-center justify-center mx-auto border-2 border-white/30">
-                  <currentItem.icon size={64} className="text-white" />
+              <div className="mb-12">
+                <div className="bg-white/20 backdrop-blur-sm rounded-full w-40 h-40 flex items-center justify-center mx-auto border-2 border-white/30 shadow-2xl">
+                  <currentItem.icon size={80} className="text-white" />
                 </div>
               </div>
 
               {/* Product Info */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20">
-                <div className="flex items-center justify-center gap-3 mb-4">
-                  <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
+              <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-12 border border-white/20 shadow-2xl">
+                <div className="flex items-center justify-center gap-4 mb-6">
+                  <span className={`px-6 py-3 rounded-full text-sm font-accent font-semibold ${
                     currentItem.category === 'candy' 
-                      ? 'bg-pink-500/80 text-white' 
-                      : 'bg-blue-500/80 text-white'
+                      ? 'bg-candy-pink/80 text-white' 
+                      : 'bg-grape-purple/80 text-white'
                   }`}>
                     {currentItem.category === 'candy' ? 'Candied Fruit' : 'Adult Drink'}
                   </span>
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/30 transition-all duration-300 rounded-full p-3 btn-shadow"
+                    onClick={() => handleAddToCart(currentItem)}
+                  >
+                    <ShoppingCart size={20} />
+                  </motion.button>
                 </div>
                 
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-4" style={{ fontFamily: 'Georgia, serif' }}>
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6">
                   {currentItem.title}
                 </h1>
                 
-                <p className="text-xl text-white/90 mb-6 leading-relaxed max-w-2xl mx-auto">
+                <p className="text-xl md:text-2xl text-white/90 mb-8 leading-relaxed max-w-3xl mx-auto font-body">
                   {currentItem.description}
                 </p>
                 
-                <div className="text-3xl font-bold text-white mb-8" style={{ fontFamily: 'Georgia, serif' }}>
+                <div className="text-4xl md:text-5xl font-display font-bold text-sweet-gradient mb-8">
                   ${currentItem.price}
                 </div>
               </div>
             </motion.div>
           </AnimatePresence>
 
-          {/* Action Button */}
-          <div className="flex justify-center mb-12">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => handleAddToCart(currentItem)}
-              className="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-4 px-8 rounded-full text-lg transition-colors duration-200 flex items-center justify-center gap-3"
-            >
-              <ShoppingCart size={20} />
-              Add to Cart
-            </motion.button>
-          </div>
         </div>
       </div>
 
       {/* Navigation Arrows */}
-      <button
+      <motion.button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/30 transition-all duration-300 rounded-full p-3"
+        className="absolute left-6 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/30 transition-all duration-300 rounded-full p-4 btn-shadow"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
       >
-        <ChevronLeft size={24} />
-      </button>
+        <ChevronLeft size={28} />
+      </motion.button>
       
-      <button
+      <motion.button
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/30 transition-all duration-300 rounded-full p-3"
+        className="absolute right-6 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/30 transition-all duration-300 rounded-full p-4 btn-shadow"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
       >
-        <ChevronRight size={24} />
-      </button>
+        <ChevronRight size={28} />
+      </motion.button>
 
       {/* Dots Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
-        <div className="flex space-x-3">
+      <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-20">
+        <div className="flex space-x-4">
           {galleryItems.map((_, index) => (
-            <button
+            <motion.button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              className={`w-4 h-4 rounded-full transition-all duration-300 ${
                 index === currentIndex 
                   ? 'bg-white scale-125' 
                   : 'bg-white/50 hover:bg-white/70'
               }`}
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.9 }}
             />
           ))}
         </div>
