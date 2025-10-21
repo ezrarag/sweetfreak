@@ -2,18 +2,18 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { Apple, Grape, Cherry, Droplets, Banana, Orange, Heart } from 'lucide-react';
+import { Apple, Grape, Cherry, Droplets, Banana, Citrus, Heart } from 'lucide-react';
 import { candiedFruits, adultDrinks } from '@/data/products';
 
 export default function Menu() {
   const [activeTab, setActiveTab] = useState<'candied-fruits' | 'adult-drinks'>('candied-fruits');
 
   const getIcon = (productId: string) => {
-    const iconMap: { [key: string]: any } = {
+    const iconMap: { [key: string]: React.ComponentType<{ size: number }> } = {
       strawberry: Heart,
       grapes: Grape,
       banana: Banana,
-      orange: Orange,
+      orange: Citrus,
       'berry-freaky': Droplets,
       'gag-green-apple': Apple,
       'gut-gushing-grape': Grape,

@@ -38,8 +38,8 @@ export default function About() {
             </motion.div>
             
             <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-6">
-              We're a passionate mother-daughter team bringing you the sweetest treats and most refreshing drinks! 
-              Our candied fruits are made with love and our adult drinks pack a Jolly Rancher punch that'll make your taste buds dance.
+              We&apos;re a passionate mother-daughter team bringing you the sweetest treats and most refreshing drinks! 
+              Our candied fruits are made with love and our adult drinks pack a Jolly Rancher punch that&apos;ll make your taste buds dance.
             </p>
             
             <div className="grid md:grid-cols-2 gap-6 mt-8">

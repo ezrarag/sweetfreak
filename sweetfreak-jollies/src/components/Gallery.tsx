@@ -8,7 +8,7 @@ interface GalleryItem {
   id: string;
   title: string;
   description: string;
-  icon: any;
+  icon: React.ComponentType<{ size: number; className?: string }>;
   color: string;
 }
 
@@ -50,7 +50,7 @@ const galleryItems: GalleryItem[] = [
   },
   {
     id: 'apple-drink',
-    title: 'Gag\'n Green Apple',
+    title: 'Gag&apos;n Green Apple',
     description: 'Green Apple Jolly Rancher cocktail',
     icon: Apple,
     color: 'text-green-500',
@@ -137,7 +137,7 @@ export default function Gallery() {
               📸 Product Photos Coming Soon!
             </h3>
             <p className="text-gray-600">
-              We're working on capturing beautiful photos of our candied fruits and adult drinks. 
+              We&apos;re working on capturing beautiful photos of our candied fruits and adult drinks. 
               Check back soon for mouth-watering visuals!
             </p>
           </div>

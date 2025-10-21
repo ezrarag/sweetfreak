@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { Phone, Mail, Instagram, MessageCircle, Send } from 'lucide-react';
+import { Phone, Instagram, MessageCircle, Send } from 'lucide-react';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -15,7 +15,7 @@ export default function Contact() {
     e.preventDefault();
     // Handle form submission here
     console.log('Form submitted:', formData);
-    alert('Thank you for your message! We\'ll get back to you soon.');
+    alert('Thank you for your message! We&apos;ll get back to you soon.');
     setFormData({ name: '', phone: '', message: '' });
   };
 
@@ -40,7 +40,7 @@ export default function Contact() {
             <span className="text-pink-500 bubble-text">Contact</span>
             <span className="text-purple-500 bubble-text"> Us</span>
           </h2>
-          <p className="text-xl text-gray-700">Ready to order? Let's connect!</p>
+          <p className="text-xl text-gray-700">Ready to order? Let&apos;s connect!</p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-8">
