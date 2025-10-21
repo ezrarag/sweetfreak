@@ -117,7 +117,32 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
           >
             {/* Header */}
             <div className="absolute top-0 left-0 right-0 z-20 bg-transparent backdrop-blur-sm">
-              <div className="flex items-center justify-end p-6">
+              <div className="flex items-center justify-between p-6">
+                {/* Tab Navigation */}
+                <div className="bg-transparent backdrop-blur-sm border-2 border-orange-400 rounded-full p-2">
+                  <button
+                    onClick={() => setActiveTab('candied-fruits')}
+                    className={`px-8 py-3 rounded-full font-bold text-lg transition-all ${
+                      activeTab === 'candied-fruits'
+                        ? 'bg-pink-500 text-white shadow-lg'
+                        : 'text-white hover:text-pink-300'
+                    }`}
+                  >
+                    Candied Fruits
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('adult-drinks')}
+                    className={`px-8 py-3 rounded-full font-bold text-lg transition-all ${
+                      activeTab === 'adult-drinks'
+                        ? 'bg-purple-500 text-white shadow-lg'
+                        : 'text-white hover:text-purple-300'
+                    }`}
+                  >
+                    Adult Drinks
+                  </button>
+                </div>
+
+                {/* Right Side Controls */}
                 <div className="flex items-center gap-4">
                   {/* Cart Button */}
                   <motion.button
@@ -140,32 +165,6 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
                     className="text-white hover:text-orange-300 transition-colors"
                   >
                     <X size={32} />
-                  </button>
-                </div>
-              </div>
-
-              {/* Tab Navigation */}
-              <div className="flex justify-center pb-6">
-                <div className="bg-transparent backdrop-blur-sm border-2 border-orange-400 rounded-full p-2">
-                  <button
-                    onClick={() => setActiveTab('candied-fruits')}
-                    className={`px-8 py-3 rounded-full font-bold text-lg transition-all ${
-                      activeTab === 'candied-fruits'
-                        ? 'bg-pink-500 text-white shadow-lg'
-                        : 'text-white hover:text-pink-300'
-                    }`}
-                  >
-                    Candied Fruits
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('adult-drinks')}
-                    className={`px-8 py-3 rounded-full font-bold text-lg transition-all ${
-                      activeTab === 'adult-drinks'
-                        ? 'bg-purple-500 text-white shadow-lg'
-                        : 'text-white hover:text-purple-300'
-                    }`}
-                  >
-                    Adult Drinks
                   </button>
                 </div>
               </div>
