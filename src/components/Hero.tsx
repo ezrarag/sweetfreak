@@ -28,15 +28,12 @@ export default function Hero() {
 
         {/* Dropdown Menu */}
         <div className="absolute top-6 right-6 z-20">
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
+          <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/30 transition-all duration-300 rounded-full p-3 group btn-shadow ring-2 ring-candy-pink/70 hover:ring-grape-purple/70 hover:animate-pulse-slow"
+            className="bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/30 transition-all duration-300 rounded-full p-3 group btn-shadow ring-2 ring-candy-pink/70 hover:ring-grape-purple/70"
           >
             <Apple size={32} />
-          </motion.button>
+          </button>
 
           {/* Premium Dropdown Menu */}
             <AnimatePresence>

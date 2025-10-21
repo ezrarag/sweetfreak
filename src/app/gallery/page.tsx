@@ -2,10 +2,9 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { X, Heart, Grape, Banana, Citrus, Droplets, Apple, Cherry, ShoppingCart, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Heart, Grape, Banana, Citrus, Droplets, Apple, Cherry, ShoppingCart, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
-import Button from '@/components/ui/Button';
-import { fadeInUp, scaleIn, float } from '@/lib/motionPresets';
+import { scaleIn, float } from '@/lib/motionPresets';
 
 interface GalleryItem {
   id: string;

@@ -6,7 +6,7 @@ import { X, Apple, Grape, Cherry, Droplets, Banana, Citrus, Heart, ShoppingCart,
 import { candiedFruits, adultDrinks } from '@/data/products';
 import CheckoutPopup from './CheckoutPopup';
 import Button from './ui/Button';
-import { fadeInUp, scaleIn, buttonHover } from '@/lib/motionPresets';
+import { scaleIn, buttonHover } from '@/lib/motionPresets';
 
 interface MenuPopupProps {
   isOpen: boolean;
@@ -94,14 +94,10 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
     }
   };
 
-  const removeFromCart = (productId: string) => {
-    setCart(cart.filter(item => item.id !== productId));
-  };
-
   const currentProducts = activeTab === 'candied-fruits' ? candiedFruits : adultDrinks;
 
   // ProductCard Component
-  const ProductCard = ({ product, index }: { product: any; index: number }) => (
+  const ProductCard = ({ product, index }: { product: typeof candiedFruits[0]; index: number }) => (
     <motion.div
       variants={scaleIn}
       initial="hidden"
