@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
-import { X, Apple, Grape, Cherry, Droplets, Banana, Citrus, Heart, ShoppingCart, Plus, Minus } from 'lucide-react';
+import { X, Apple, Grape, Cherry, Droplets, Banana, Citrus, Heart, ShoppingCart, Plus } from 'lucide-react';
 import { candiedFruits, adultDrinks } from '@/data/products';
 import CheckoutPopup from './CheckoutPopup';
 
@@ -71,7 +71,9 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
     return imageMap[productId] || 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400&h=400&fit=crop&crop=center';
   };
 
-  const addToCart = (product: any) => {
+  const addToCart = (product: { id: string; name: string; price?: string }) => {
+    if (!product.price) return; // Skip if no price
+    
     const existingItem = cart.find(item => item.id === product.id);
     if (existingItem) {
       setCart(cart.map(item => 
@@ -94,25 +96,6 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
     setCart(cart.filter(item => item.id !== productId));
   };
 
-  const updateQuantity = (productId: string, quantity: number) => {
-    if (quantity === 0) {
-      removeFromCart(productId);
-    } else {
-      setCart(cart.map(item => 
-        item.id === productId 
-          ? { ...item, quantity }
-          : item
-      ));
-    }
-  };
-
-  const getTotalPrice = () => {
-    return cart.reduce((total, item) => {
-      const price = parseFloat(item.price.replace('$', ''));
-      return total + (price * item.quantity);
-    }, 0);
-  };
-
   const currentProducts = activeTab === 'candied-fruits' ? candiedFruits : adultDrinks;
 
   return (
@@ -122,25 +105,25 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/95 backdrop-blur-md z-50 flex items-center justify-center"
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center"
           onClick={onClose}
         >
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="bg-white rounded-3xl w-full h-full max-w-7xl max-h-[95vh] overflow-hidden relative"
+            className="bg-transparent backdrop-blur-sm rounded-3xl w-full h-full max-w-7xl max-h-[95vh] overflow-hidden relative border-2 border-orange-400"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="absolute top-0 left-0 right-0 z-20 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+            <div className="absolute top-0 left-0 right-0 z-20 bg-transparent backdrop-blur-sm border-b border-orange-400">
               <div className="flex items-center justify-between p-6">
                 <div>
                   <h2 className="text-4xl md:text-5xl font-bold" style={{ fontFamily: 'Georgia, serif' }}>
                     <span className="text-pink-600">Our</span>
                     <span className="text-purple-600"> Menu</span>
                   </h2>
-                  <p className="text-xl text-gray-600 mt-2">Premium candied fruits & adult drinks</p>
+                  <p className="text-xl text-white mt-2">Premium candied fruits & adult drinks</p>
                 </div>
                 
                 <div className="flex items-center gap-4">
@@ -162,7 +145,7 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
                   {/* Close Button */}
                   <button
                     onClick={onClose}
-                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                    className="text-white hover:text-orange-300 transition-colors"
                   >
                     <X size={32} />
                   </button>
@@ -171,13 +154,13 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
 
               {/* Tab Navigation */}
               <div className="flex justify-center pb-6">
-                <div className="bg-gray-100 rounded-full p-2">
+                <div className="bg-transparent backdrop-blur-sm border-2 border-orange-400 rounded-full p-2">
                   <button
                     onClick={() => setActiveTab('candied-fruits')}
                     className={`px-8 py-3 rounded-full font-bold text-lg transition-all ${
                       activeTab === 'candied-fruits'
                         ? 'bg-pink-500 text-white shadow-lg'
-                        : 'text-gray-600 hover:text-pink-500'
+                        : 'text-white hover:text-pink-300'
                     }`}
                   >
                     Candied Fruits
@@ -187,7 +170,7 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
                     className={`px-8 py-3 rounded-full font-bold text-lg transition-all ${
                       activeTab === 'adult-drinks'
                         ? 'bg-purple-500 text-white shadow-lg'
-                        : 'text-gray-600 hover:text-purple-500'
+                        : 'text-white hover:text-purple-300'
                     }`}
                   >
                     Adult Drinks

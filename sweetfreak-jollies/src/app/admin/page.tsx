@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { ArrowLeft, Settings, QrCode, Download } from 'lucide-react';
+import { ArrowLeft, Settings, Download } from 'lucide-react';
 import Link from 'next/link';
 import QRGenerator from '@/components/QRGenerator';
 
@@ -143,7 +143,7 @@ export default function AdminPage() {
               <h3 className="text-lg font-bold text-gray-800 mb-3">For Testing:</h3>
               <ol className="list-decimal list-inside space-y-2 text-gray-600">
                 <li>Copy the URL to test in your browser</li>
-                <li>Use your phone's camera to scan QR codes</li>
+                <li>Use your phone&apos;s camera to scan QR codes</li>
                 <li>Verify the landing pages work correctly</li>
                 <li>Update the base URL for production</li>
               </ol>

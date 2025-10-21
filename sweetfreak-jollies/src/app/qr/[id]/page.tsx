@@ -38,8 +38,8 @@ export default function QRPage() {
                 </h2>
                 <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl">
                   <p className="text-lg text-gray-700 leading-relaxed">
-                    We're a passionate mother-daughter team bringing you the sweetest treats and most refreshing drinks! 
-                    Our candied fruits are made with love and our adult drinks pack a Jolly Rancher punch that'll make your taste buds dance.
+                    We&apos;re a passionate mother-daughter team bringing you the sweetest treats and most refreshing drinks! 
+                    Our candied fruits are made with love and our adult drinks pack a Jolly Rancher punch that&apos;ll make your taste buds dance.
                   </p>
                 </div>
               </div>
@@ -58,7 +58,7 @@ export default function QRPage() {
                     QR Code Not Found
                   </h2>
                   <p className="text-gray-600 mb-6">
-                    This QR code doesn't match any of our pages. Please try scanning a different code.
+                    This QR code doesn&apos;t match any of our pages. Please try scanning a different code.
                   </p>
                   <Link
                     href="/"

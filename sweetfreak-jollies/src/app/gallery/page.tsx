@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { X, Heart, Grape, Banana, Citrus, Droplets, Apple, Cherry, ShoppingCart, Plus, Minus, ArrowLeft } from 'lucide-react';
+import { X, Heart, Grape, Banana, Citrus, Droplets, Apple, Cherry, ShoppingCart, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 interface GalleryItem {
