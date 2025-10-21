@@ -116,16 +116,8 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="absolute top-0 left-0 right-0 z-20 bg-transparent backdrop-blur-sm border-b border-orange-400">
-              <div className="flex items-center justify-between p-6">
-                <div>
-                  <h2 className="text-4xl md:text-5xl font-bold" style={{ fontFamily: 'Georgia, serif' }}>
-                    <span className="text-pink-600">Our</span>
-                    <span className="text-purple-600"> Menu</span>
-                  </h2>
-                  <p className="text-xl text-white mt-2">Premium candied fruits & adult drinks</p>
-                </div>
-                
+            <div className="absolute top-0 left-0 right-0 z-20 bg-transparent backdrop-blur-sm">
+              <div className="flex items-center justify-end p-6">
                 <div className="flex items-center gap-4">
                   {/* Cart Button */}
                   <motion.button
@@ -180,7 +172,7 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
             </div>
 
             {/* Product Grid */}
-            <div className="pt-48 pb-8 px-8 h-full overflow-y-auto">
+            <div className="pt-24 pb-8 px-8 h-full overflow-y-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {currentProducts.map((product, index) => (
                   <motion.div
