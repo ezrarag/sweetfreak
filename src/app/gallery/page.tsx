@@ -1,8 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { useState } from 'react';
-import { X, Heart, Grape, Banana, Citrus, Droplets, Apple, Cherry, ShoppingCart, ArrowLeft } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { X, Heart, Grape, Banana, Citrus, Droplets, Apple, Cherry, ShoppingCart, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
 interface GalleryItem {
@@ -100,188 +100,203 @@ const galleryItems: GalleryItem[] = [
 ];
 
 export default function Gallery() {
-  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleAddToCart = (item: GalleryItem) => {
     // TODO: Implement cart functionality
     console.log('Added to cart:', item);
   };
 
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % galleryItems.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + galleryItems.length) % galleryItems.length);
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
+  };
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        prevSlide();
+      } else if (event.key === 'ArrowRight') {
+        nextSlide();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const currentItem = galleryItems[currentIndex];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-yellow-50">
-      {/* Navigation */}
+    <div className="relative h-screen overflow-hidden">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('https://firebasestorage.googleapis.com/v0/b/readyaimgo-clients-temp.firebasestorage.app/o/sweetfreaks%2Fsweetfreaks-image-green-1.png?alt=media&token=e75629fd-5acb-44af-8502-5f1218d0f8d1')`
+        }}
+      />
+      
+      {/* Overlay with transparency */}
+      <div className="absolute inset-0 bg-[#FAF5FE] opacity-75"></div>
+
+      {/* Floating fruits - more subtle */}
+      <div className="absolute inset-0 pointer-events-none">
+        <motion.div
+          className="absolute top-20 left-10 text-pink-200"
+          animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
+          transition={{ duration: 6, repeat: Infinity }}
+        >
+          <Heart size={32} />
+        </motion.div>
+        <motion.div
+          className="absolute top-32 right-20 text-purple-200"
+          animate={{ y: [0, -15, 0], rotate: [0, -5, 0] }}
+          transition={{ duration: 6, repeat: Infinity, delay: 1 }}
+        >
+          <Grape size={28} />
+        </motion.div>
+        <motion.div
+          className="absolute bottom-40 left-20 text-yellow-200"
+          animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
+          transition={{ duration: 6, repeat: Infinity, delay: 2 }}
+        >
+          <Banana size={24} />
+        </motion.div>
+        <motion.div
+          className="absolute bottom-20 right-10 text-orange-200"
+          animate={{ y: [0, -15, 0], rotate: [0, -5, 0] }}
+          transition={{ duration: 6, repeat: Infinity, delay: 3 }}
+        >
+          <Citrus size={28} />
+        </motion.div>
+      </div>
+
+      {/* Back Button */}
       <div className="absolute top-6 left-6 z-20">
         <Link href="/">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-transparent border-2 border-gray-400 text-gray-400 hover:bg-gray-400 hover:text-white transition-all duration-300 rounded-full p-3"
+            className="bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/30 transition-all duration-300 rounded-full p-3"
           >
             <ArrowLeft size={24} />
           </motion.button>
         </Link>
       </div>
 
-      <div className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h1 className="text-5xl md:text-6xl font-bold mb-4" style={{ fontFamily: 'Georgia, serif' }}>
-              <span className="text-pink-600">Gallery</span>
-            </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Discover our most loved candied fruits and adult drinks
-            </p>
-          </motion.div>
+      {/* Cart Button */}
+      <div className="absolute top-6 right-6 z-20">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/30 transition-all duration-300 rounded-full p-3"
+        >
+          <ShoppingCart size={24} />
+        </motion.button>
+      </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {galleryItems.map((item, index) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100"
-              >
-                {/* Product Image Placeholder */}
-                <div className="h-48 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-                  <div className={`${item.color} opacity-20`}>
-                    <item.icon size={64} />
-                  </div>
+      {/* Main Content */}
+      <div className="relative z-10 h-full flex items-center justify-center px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Product Display */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.5 }}
+              className="mb-12"
+            >
+              {/* Product Icon */}
+              <div className="mb-8">
+                <div className="bg-white/20 backdrop-blur-sm rounded-full w-32 h-32 flex items-center justify-center mx-auto border-2 border-white/30">
+                  <currentItem.icon size={64} className="text-white" />
                 </div>
+              </div>
 
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      item.category === 'candy' 
-                        ? 'bg-pink-100 text-pink-700' 
-                        : 'bg-blue-100 text-blue-700'
-                    }`}>
-                      {item.category === 'candy' ? 'Candied Fruit' : 'Adult Drink'}
-                    </span>
-                    <div className={`${item.color}`}>
-                      <item.icon size={24} />
-                    </div>
-                  </div>
-
-                  <h3 className="text-xl font-bold text-gray-900 mb-2" style={{ fontFamily: 'Georgia, serif' }}>
-                    {item.title}
-                  </h3>
-                  
-                  <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-                    {item.description}
-                  </p>
-
-                  <div className="flex items-center justify-between">
-                    <div className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Georgia, serif' }}>
-                      ${item.price}
-                    </div>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => handleAddToCart(item)}
-                      className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-2 rounded-full font-semibold text-sm transition-colors duration-200 flex items-center gap-2"
-                    >
-                      <ShoppingCart size={16} />
-                      Add to Cart
-                    </motion.button>
-                  </div>
+              {/* Product Info */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
+                    currentItem.category === 'candy' 
+                      ? 'bg-pink-500/80 text-white' 
+                      : 'bg-blue-500/80 text-white'
+                  }`}>
+                    {currentItem.category === 'candy' ? 'Candied Fruit' : 'Adult Drink'}
+                  </span>
                 </div>
-              </motion.div>
-            ))}
-          </div>
+                
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-4" style={{ fontFamily: 'Georgia, serif' }}>
+                  {currentItem.title}
+                </h1>
+                
+                <p className="text-xl text-white/90 mb-6 leading-relaxed max-w-2xl mx-auto">
+                  {currentItem.description}
+                </p>
+                
+                <div className="text-3xl font-bold text-white mb-8" style={{ fontFamily: 'Georgia, serif' }}>
+                  ${currentItem.price}
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            viewport={{ once: true }}
-            className="text-center mt-16"
-          >
+          {/* Action Button */}
+          <div className="flex justify-center mb-12">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-4 px-8 rounded-full text-lg transition-colors duration-200"
+              onClick={() => handleAddToCart(currentItem)}
+              className="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-4 px-8 rounded-full text-lg transition-colors duration-200 flex items-center justify-center gap-3"
             >
-              View All Products
+              <ShoppingCart size={20} />
+              Add to Cart
             </motion.button>
-          </motion.div>
+          </div>
         </div>
       </div>
 
-      {/* Enhanced Modal */}
-      {selectedItem && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedItem(null)}
-        >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="bg-white rounded-3xl p-8 max-w-lg w-full relative"
-            onClick={(e) => e.stopPropagation()}
-          >
+      {/* Navigation Arrows */}
+      <button
+        onClick={prevSlide}
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/30 transition-all duration-300 rounded-full p-3"
+      >
+        <ChevronLeft size={24} />
+      </button>
+      
+      <button
+        onClick={nextSlide}
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/30 transition-all duration-300 rounded-full p-3"
+      >
+        <ChevronRight size={24} />
+      </button>
+
+      {/* Dots Indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+        <div className="flex space-x-3">
+          {galleryItems.map((_, index) => (
             <button
-              onClick={() => setSelectedItem(null)}
-              className="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition-colors"
-            >
-              <X size={24} />
-            </button>
-            
-            <div className="text-center">
-              {/* Product Image */}
-              <div className="h-48 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl flex items-center justify-center mb-6">
-                <div className={`${selectedItem.color} opacity-20`}>
-                  <selectedItem.icon size={80} />
-                </div>
-              </div>
-              
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                  selectedItem.category === 'candy' 
-                    ? 'bg-pink-100 text-pink-700' 
-                    : 'bg-blue-100 text-blue-700'
-                }`}>
-                  {selectedItem.category === 'candy' ? 'Candied Fruit' : 'Adult Drink'}
-                </span>
-                <div className={`${selectedItem.color}`}>
-                  <selectedItem.icon size={24} />
-                </div>
-              </div>
-              
-              <h3 className="text-3xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'Georgia, serif' }}>
-                {selectedItem.title}
-              </h3>
-              
-              <p className="text-gray-600 mb-6 text-lg leading-relaxed">
-                {selectedItem.description}
-              </p>
-              
-              <div className="text-4xl font-bold text-gray-900 mb-8" style={{ fontFamily: 'Georgia, serif' }}>
-                ${selectedItem.price}
-              </div>
-              
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => handleAddToCart(selectedItem)}
-                className="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-4 px-8 rounded-full text-lg transition-colors duration-200 flex items-center gap-3 mx-auto"
-              >
-                <ShoppingCart size={20} />
-                Add to Cart
-              </motion.button>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentIndex 
+                  ? 'bg-white scale-125' 
+                  : 'bg-white/50 hover:bg-white/70'
+              }`}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

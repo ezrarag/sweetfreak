@@ -64,7 +64,8 @@ export default function Menu() {
           viewport={{ once: true }}
           className="flex justify-center mb-12"
         >
-          <div className="bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
+          {/* Desktop Layout */}
+          <div className="hidden md:block bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
             <button
               onClick={() => setActiveTab('candied-fruits')}
               className={`px-8 py-3 rounded-full font-bold text-lg transition-all ${
@@ -84,6 +85,21 @@ export default function Menu() {
               }`}
             >
               Adult Drinks
+            </button>
+          </div>
+
+          {/* Mobile Layout - Dropdown */}
+          <div className="md:hidden relative">
+            <button
+              onClick={() => setActiveTab(activeTab === 'candied-fruits' ? 'adult-drinks' : 'candied-fruits')}
+              className={`px-6 py-3 rounded-full font-bold text-lg transition-all bg-white/90 backdrop-blur-sm shadow-lg ${
+                activeTab === 'candied-fruits'
+                  ? 'bg-pink-500 text-white'
+                  : 'bg-purple-500 text-white'
+              }`}
+            >
+              {activeTab === 'candied-fruits' ? 'Candied Fruits' : 'Adult Drinks'}
+              <span className="ml-2">▼</span>
             </button>
           </div>
         </motion.div>

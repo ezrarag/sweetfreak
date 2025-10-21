@@ -141,13 +141,15 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-transparent border-2 border-pink-600 text-pink-600 hover:bg-pink-600 hover:text-white font-semibold py-4 px-8 rounded-full text-lg transition-all duration-300"
-            >
-              Order Now
-            </motion.button>
+            <Link href="/gallery">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-transparent border-2 border-pink-600 text-pink-600 hover:bg-pink-600 hover:text-white font-semibold py-4 px-8 rounded-full text-lg transition-all duration-300"
+              >
+                Order Now
+              </motion.button>
+            </Link>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
