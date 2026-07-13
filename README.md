@@ -1,141 +1,85 @@
-# Sweet Freak & Jollies 🍭🍹
+# Sweet Freak & Jollies
 
-A vibrant, QR-driven marketing website for a mother-daughter business specializing in candied fruits and adult drinks with Jolly Rancher twists.
+Sweet Freak & Jollies is a Next.js App Router storefront and operations portal for a candy-and-drinks brand. The repo now includes customer auth, admin auth, Firestore-backed products and orders, Stripe checkout, webhook-based order creation, and a lightweight social marketing module.
 
-## Features ✨
+## Stack
 
-- **QR Code Integration**: Dynamic QR routes for different landing pages
-- **Responsive Design**: Mobile-first design with candy-themed aesthetics
-- **Interactive Components**: Animated sections with Framer Motion
-- **Admin Panel**: QR code generation and management
-- **Contact Forms**: Order placement and customer communication
-- **Product Gallery**: Showcase of candied fruits and adult drinks
+- Next.js App Router
+- TypeScript
+- Tailwind CSS
+- Firebase Auth, Firestore, and Storage
+- Stripe Checkout + webhooks
+- Resend for transactional email
 
-## Tech Stack 🛠️
+## Main routes
 
-- **Next.js 14** with App Router
-- **TypeScript** for type safety
-- **TailwindCSS** for styling
-- **Framer Motion** for animations
-- **Lucide React** for icons
-- **QRCode** library for QR generation
+### Public
 
-## Getting Started 🚀
+- `/`
+- `/about`
+- `/contact`
+- `/gallery`
+- `/qr/[id]`
 
-1. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+### Admin
 
-2. **Run the development server**:
-   ```bash
-   npm run dev
-   ```
+- `/admin`
+- `/admin/login`
+- `/admin/dashboard`
+- `/admin/products`
+- `/admin/products/new`
+- `/admin/products/[id]/edit`
+- `/admin/orders`
+- `/admin/marketing`
+- `/admin/marketing/connect`
+- `/admin/settings`
 
-3. **Open your browser**:
-   Navigate to [http://localhost:3000](http://localhost:3000)
+### Customer
 
-## QR Code Routes 📱
+- `/customer`
+- `/customer/login`
+- `/customer/dashboard`
+- `/customer/shop`
+- `/customer/orders`
+- `/customer/checkout`
+- `/customer/checkout/success`
 
-- `/qr/menu` - Direct customers to the menu
-- `/qr/order` - Direct customers to place orders
-- `/qr/about` - Direct customers to learn about the business
+### API
 
-## Admin Panel 🔧
+- `/api/auth/session`
+- `/api/admin/products`
+- `/api/admin/products/[id]`
+- `/api/admin/orders/[id]/status`
+- `/api/admin/social/post`
+- `/api/admin/social/connect`
+- `/api/checkout/session`
+- `/api/webhooks/stripe`
 
-Access the admin panel at `/admin` to:
-- Generate QR codes for different routes
-- Download QR code images
-- Configure base URLs
-- Test QR code functionality
+## Architecture
 
-## Project Structure 📁
+- `src/lib/firebase.ts`: client Firebase accessors
+- `src/lib/firebase-admin.ts`: lazy Admin SDK accessors
+- `src/lib/auth.ts`: session cookie verification and admin role checks
+- `src/lib/firestore.ts`: shared Firestore helpers
+- `src/lib/stripe.ts`: server Stripe client
+- `src/context/CartContext.tsx`: customer cart persistence
+- `src/components/admin/*`: admin navigation, order modal, notifications, marketing tools
+- `src/components/customer/*`: shop, checkout, and customer orders UI
 
-```
-src/
-├── app/
-│   ├── admin/           # Admin panel for QR generation
-│   ├── qr/[id]/         # Dynamic QR landing pages
-│   ├── globals.css      # Global styles with candy theme
-│   ├── layout.tsx       # Root layout
-│   └── page.tsx         # Homepage
-├── components/
-│   ├── Hero.tsx         # Hero section with QR code
-│   ├── About.tsx        # About section
-│   ├── Menu.tsx         # Product menu with tabs
-│   ├── Gallery.tsx      # Product gallery
-│   ├── Contact.tsx      # Contact form and methods
-│   └── QRGenerator.tsx   # QR code generation component
-├── data/
-│   └── products.ts       # Product data and types
-└── lib/
-    └── qr.ts           # QR code utility functions
-```
+## Environment setup
 
-## Customization 🎨
+1. Copy `.env.local.example` to `.env.local`.
+2. Fill in Firebase, Stripe, Resend, and social credentials.
+3. Install dependencies with `pnpm install` or your preferred package manager.
+4. Generate Next route types with `next typegen`.
+5. Run `next dev`.
 
-### Colors
-The site uses a candy-themed color palette defined in `globals.css`:
-- Pink: `#ff69b4`
-- Purple: `#9370db`
-- Green: `#98fb98`
-- Yellow: `#ffff00`
-- Blue: `#87ceeb`
-- Orange: `#ffa500`
+## Verification
 
-### Products
-Update product information in `src/data/products.ts`:
-- Add new candied fruits
-- Add new adult drink flavors
-- Modify prices and descriptions
+- `next typegen`
+- `tsc --noEmit`
+- `next build`
 
-### QR Codes
-- Update base URL in admin panel
-- Add new QR routes in `src/app/qr/[id]/page.tsx`
-- Customize QR code appearance in `src/lib/qr.ts`
+## Deployment
 
-## Deployment 🚀
-
-1. **Build the project**:
-   ```bash
-   npm run build
-   ```
-
-2. **Deploy to Vercel** (recommended):
-   ```bash
-   npx vercel
-   ```
-
-3. **Update QR codes**:
-   - Update base URL in admin panel
-   - Regenerate QR codes with production URL
-   - Download and print for marketing materials
-
-## Marketing Integration 📢
-
-### QR Code Usage
-1. Generate QR codes from the admin panel
-2. Download PNG images
-3. Add to flyers, business cards, menus
-4. Customers scan to access specific pages
-
-### Social Media
-- Instagram: `@sweetfreakjollies`
-- WhatsApp: Direct messaging for orders
-- Phone: `(123) 456-7890`
-
-## Contributing 🤝
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## License 📄
-
-This project is licensed under the MIT License.
-
----
-
-**Sweet Freak & Jollies** - Bringing you the sweetest treats and most refreshing drinks! 🍭🍹
+See [DEPLOYMENT.md](/Users/ehauga/Desktop/local%20dev/sweetfreak/DEPLOYMENT.md) for Vercel env vars, Stripe webhook setup, Firebase checklist, and Firestore rules.
